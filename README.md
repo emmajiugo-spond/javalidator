@@ -199,13 +199,13 @@ Comprehensive documentation for all aspects of Javalidator:
 
 ### Quick Reference
 
-**33 Built-in Rules Available** - See the [Supported Rules Guide](docs/supported-rules.md) for complete documentation.
+**32 Built-in Rules Available** - See the [Supported Rules Guide](docs/supported-rules.md) for complete documentation.
 
 **Core Rules:** `required`, `min`, `max`, `email`, `numeric`, `gt`, `lt`, `gte`, `lte`, `regex`, `in`
 **Date Rules:** `date`, `before`, `after`, `future`, `past`
 **Format Rules:** `url`, `ip`, `uuid`, `json`, `alpha`, `alpha_num`, `enum`, `digits`
 **Special Rules:** `between`, `size`, `nullable`
-**Conditional Rules:** `confirmed`, `required_if`, `required_unless`
+**Conditional Rules:** `required_if`, `required_unless`
 **Field Comparison:** `same`, `different`
 **Array/Collection:** `distinct`
 

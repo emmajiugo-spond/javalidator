@@ -55,7 +55,6 @@ final class BuiltInRules {
                 new SizeRule(),
 
                 // Conditional rules
-                new ConfirmedRule(),
                 new RequiredIfRule(),
                 new RequiredUnlessRule(),
 

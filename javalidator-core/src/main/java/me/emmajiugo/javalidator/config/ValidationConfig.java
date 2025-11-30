@@ -13,7 +13,7 @@ package me.emmajiugo.javalidator.config;
  *   <li><b>Strict Reflection Mode</b> - Checks SecurityManager permissions before using
  *       setAccessible(), allowing integration with Java security policies</li>
  *   <li><b>Field Name Validation</b> - Validates field names in conditional rules (required_if,
- *       required_unless, confirmed) against a regex pattern to prevent field name injection</li>
+ *       required_unless, same, different) against a regex pattern to prevent field name injection</li>
  *   <li><b>Type-Safe Enum Validation</b> - Enum validation requires compile-time Class<?> parameter,
  *       preventing arbitrary class loading attacks</li>
  *   <li><b>Pattern Caching</b> - RegexRule caches compiled patterns for performance without

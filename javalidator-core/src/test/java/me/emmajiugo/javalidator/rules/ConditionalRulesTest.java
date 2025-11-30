@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static me.emmajiugo.javalidator.rules.ValidationTestHelper.assertValidation;
 
 /**
- * Tests for conditional validation rules: required_if, required_unless, confirmed
+ * Tests for conditional validation rules: required_if, required_unless
  */
 @DisplayName("Conditional Validation Rules")
 class ConditionalRulesTest {
@@ -123,88 +123,4 @@ class ConditionalRulesTest {
         }
     }
 
-    @Nested
-    @DisplayName("Confirmed Rule")
-    class ConfirmedRuleTests {
-
-        record PasswordWithDefaultConfirmation(
-                @Rule("required|min:8")
-                @Rule("confirmed")
-                String password,
-
-                String password_confirmation
-        ) {}
-
-        record PasswordWithCustomConfirmation(
-                @Rule("required|min:8")
-                @Rule("confirmed:passwordConfirm")
-                String password,
-
-                String passwordConfirm
-        ) {}
-
-        record RegistrationForm(
-                String accountType,
-
-                @Rule("required_if:accountType,business")
-                String companyName,
-
-                @Rule("required_unless:accountType,business")
-                String taxId
-        ) {}
-
-        @Test
-        @DisplayName("should pass when password matches confirmation (default field name)")
-        void shouldPassWhenPasswordMatchesConfirmationDefault() {
-            assertValidation(new PasswordWithDefaultConfirmation("password123", "password123"))
-                    .isValid();
-        }
-
-        @Test
-        @DisplayName("should fail when password doesn't match confirmation (default field name)")
-        void shouldFailWhenPasswordDoesntMatchConfirmationDefault() {
-            assertValidation(new PasswordWithDefaultConfirmation("password123", "different"))
-                    .hasSingleError()
-                    .hasErrorOn("password")
-                    .withMessageContaining("confirmation");
-        }
-
-        @Test
-        @DisplayName("should pass when password matches confirmation (custom field name)")
-        void shouldPassWhenPasswordMatchesConfirmationCustom() {
-            assertValidation(new PasswordWithCustomConfirmation("password123", "password123"))
-                    .isValid();
-        }
-
-        @Test
-        @DisplayName("should fail when password doesn't match confirmation (custom field name)")
-        void shouldFailWhenPasswordDoesntMatchConfirmationCustom() {
-            assertValidation(new PasswordWithCustomConfirmation("password123", "different"))
-                    .hasSingleError()
-                    .hasErrorOn("password")
-                    .withMessageContaining("confirmation");
-        }
-
-        @Test
-        @DisplayName("should combine conditional rules with other validations")
-        void shouldCombineConditionalRulesWithOtherValidations() {
-            // Personal account with all fields
-            assertValidation(new RegistrationForm("personal", null, "123456789"))
-                    .isValid();
-
-            // Business account with all fields
-            assertValidation(new RegistrationForm("business", "Acme Corp", "12-3456789"))
-                    .isValid();
-
-            // Business account missing company name
-            assertValidation(new RegistrationForm("business", null, "123456789"))
-                    .hasSingleError()
-                    .hasErrorOn("companyName");
-
-            // Personal account with no tax ID (should fail - required unless business)
-            assertValidation(new RegistrationForm("personal", null, null))
-                    .hasSingleError()
-                    .hasErrorOn("taxId");
-        }
-    }
 }

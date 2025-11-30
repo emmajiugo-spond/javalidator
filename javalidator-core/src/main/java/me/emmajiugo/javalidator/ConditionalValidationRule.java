@@ -10,7 +10,7 @@ package me.emmajiugo.javalidator;
  * <ul>
  *     <li>{@code required_if} - Field required if another field has specific value</li>
  *     <li>{@code required_unless} - Field required unless another field has specific value</li>
- *     <li>{@code confirmed} - Field must match its confirmation field</li>
+ *     <li>{@code same} - Field must match another field's value</li>
  * </ul>
  *
  * <p>Example implementation:

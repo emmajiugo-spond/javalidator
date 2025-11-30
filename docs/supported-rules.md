@@ -1,6 +1,6 @@
 # Supported Validation Rules
 
-Javalidator comes with **33 built-in validation rules**. All rules can be combined using the pipe `|` separator for complex validations.
+Javalidator comes with **32 built-in validation rules**. All rules can be combined using the pipe `|` separator for complex validations.
 
 ## Quick Reference Tables
 
@@ -48,7 +48,6 @@ Javalidator comes with **33 built-in validation rules**. All rules can be combin
 
 | Rule | Syntax | Description | Example |
 |------|--------|-------------|---------|
-| **confirmed** | `confirmed` or `confirmed:fieldName` | Field must match confirmation field | `@Rule("confirmed")` |
 | **required_if** | `required_if:field,value` | Required if another field has value | `@Rule("required_if:country,USA")` |
 | **required_unless** | `required_unless:field,value` | Required unless another field has value | `@Rule("required_unless:payment,cash")` |
 
@@ -151,65 +150,6 @@ public record OrderDTO2(
 
 **Note**: The `enum` rule requires the `enumClass` parameter to be set to the enum class reference (not a string). This provides type-safe validation without arbitrary class loading.
 
-## Common Validation Patterns
-
-### User Registration
-
-```java
-public record RegistrationDTO(
-    @Rule("required|min:3|max:20")
-    String username,
-
-    @Rule("required|email|max:100")
-    String email,
-
-    @Rule("required|min:8|max:50")
-    String password,
-
-    @Rule("required|gte:18|lte:100")
-    Integer age
-) {}
-```
-
-### Product Information
-
-```java
-public record ProductDTO(
-    @Rule("required|min:3|max:100")
-    String name,
-
-    @Rule("min:10|max:500")
-    String description,
-
-    @Rule("required|numeric|gte:0")
-    Double price,
-
-    @Rule("required|numeric|gte:0")
-    Integer stock,
-
-    @Rule("required|in:active,inactive,discontinued")
-    String status
-) {}
-```
-
-### Order Processing
-
-```java
-public record OrderDTO(
-    @Rule("required|regex:^ORD-\\d{6}$")
-    String orderNumber, // Format: ORD-123456
-
-    @Rule("required|in:pending,processing,shipped,delivered,cancelled")
-    String status,
-
-    @Rule("required|numeric|gte:1")
-    Integer quantity,
-
-    @Rule("required|date")
-    LocalDate orderDate
-) {}
-```
-
 ## Rule Execution Order
 
 Rules are executed in the order they appear:
@@ -240,17 +180,6 @@ Integer age; // null is OK, but if set, must be >= 18
 @Rule("required|gte:18")
 Integer age; // null fails, value < 18 fails
 ```
-
-## Adding Custom Rules
-
-Need a rule that's not in this list? See the **[Custom Validation Rules Guide](custom-rules.md)** to learn how to create your own rules.
-
-Common custom rules developers create:
-- Phone number validation
-- Credit card validation
-- Social security number validation
-- Business-specific logic
-- Database uniqueness checks
 
 ## Conditional Rules
 
@@ -287,29 +216,6 @@ public record ShippingDTO(
 
 // Address is required UNLESS deliveryMethod is "pickup"
 // If deliveryMethod is "delivery", "mail", etc., address is required
-```
-
-### Confirmed Rule
-
-Validates that a field matches its confirmation field. By default, looks for a field with `_confirmation` suffix:
-
-```java
-public record RegistrationDTO(
-    @Rule("required|min:8")
-    @Rule("confirmed")
-    String password,
-
-    String password_confirmation  // Must match password
-) {}
-
-// You can also specify a custom confirmation field:
-public record RegistrationDTO2(
-    @Rule("required|min:8")
-    @Rule("confirmed:passwordConfirm")
-    String password,
-
-    String passwordConfirm  // Must match password
-) {}
 ```
 
 ### Combining Conditional Rules with Other Rules
