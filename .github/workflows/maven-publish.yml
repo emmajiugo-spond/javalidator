@@ -54,7 +54,7 @@ jobs:
           ./mvnw versions:commit
 
       - name: Build and test
-        run: ./mvnw clean verify
+        run: ./mvnw clean install
 
       - name: Publish to Maven Central
         env:

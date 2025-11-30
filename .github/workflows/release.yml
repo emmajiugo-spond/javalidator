@@ -85,7 +85,7 @@ jobs:
           ./mvnw versions:commit
 
       - name: Run tests
-        run: ./mvnw clean verify
+        run: ./mvnw clean install
 
       - name: Commit version update
         run: |
