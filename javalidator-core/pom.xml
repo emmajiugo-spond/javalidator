@@ -12,7 +12,7 @@
 
     <artifactId>javalidator-core</artifactId>
     <packaging>jar</packaging>
-
+    <name>Javalidator Core</name>
     <description>A more elegant and framework-agnostic validation library for java.</description>
 
     <dependencies>
