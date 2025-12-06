@@ -6,7 +6,7 @@
 
     <groupId>io.github.emmajiugo</groupId>
     <artifactId>javalidator</artifactId>
-    <version>0.3.1</version>
+    <version>0.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Javalidator</name>
