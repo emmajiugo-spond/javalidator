@@ -26,7 +26,6 @@ A framework-agnostic Java validation library with Laravel-style syntax, inspired
 - [Quick Start](#quick-start)
 - [Usage Examples](#usage-examples)
 - [Documentation](#documentation)
-- [Error Handling](#error-handling)
 - [Advanced Features](#advanced-features)
 - [Security](#security)
 - [Roadmap](#roadmap)
@@ -183,85 +182,23 @@ Integer quantity;
 
 See the **[Supported Rules Guide](docs/supported-rules.md)** for complete documentation.
 
-## Error Handling
-
-### Option 1: Check ValidationResponse
-
-```java
-ValidationResponse response = Validator.validate(dto);
-
-if (!response.valid()) {
-    response.errors().forEach(error -> {
-        System.out.println("Field: " + error.field());
-        error.messages().forEach(msg ->
-            System.out.println("  - " + msg)
-        );
-    });
-}
-```
-
-### Option 2: Use ValidationException
-
-```java
-try {
-    ValidationResponse response = Validator.validate(dto);
-    if (!response.valid()) {
-        throw new ValidationException(response.errors());
-    }
-    // Process valid data
-} catch (ValidationException e) {
-    e.getErrors().forEach(error -> {
-        // Handle errors
-    });
-}
-```
-
 ## Advanced Features
 
-### Nested Object Validation with @RuleCascade
+### Nested Object Validation
 
-Validate nested objects and collections using `@RuleCascade`:
+Use `@RuleCascade` to validate nested objects and collections:
 
 ```java
-import io.github.emmajiugo.javalidator.annotations.RuleCascade;
-
-public record Address(
-    @Rule("required")
-    String street,
-
-    @Rule("required")
-    String city,
-
-    @Rule("required|digits:5")
-    String zipCode
+public record Order(
+    @Rule("required") String orderId,
+    @RuleCascade Address shippingAddress,   // Validates nested object
+    @RuleCascade List<Item> items           // Validates each item in collection
 ) {}
-
-public record User(
-    @Rule("required|min:3")
-    String name,
-
-    @Rule("required|email")
-    String email,
-
-    @RuleCascade  // Validates nested Address object
-    Address address,
-
-    @RuleCascade  // Validates each PhoneNumber in the list
-    List<PhoneNumber> phoneNumbers
-) {}
-
-// Validation cascades through nested structures
-User user = new User("John", "john@example.com", address, phones);
-ValidationResponse response = Validator.validate(user);
-
-// Error paths show nested field structure:
-// "address.street: The street field is required."
-// "phoneNumbers[0].number: The number must be exactly 10 digits."
 ```
 
-**Supports:** Single nested objects, collections (List, Set), arrays, deep nesting, and null-safe collection handling.
+Error paths show the nested structure: `"shippingAddress.city"`, `"items[0].price"`
 
-See the **[Supported Rules Guide](docs/supported-rules.md)** for detailed examples of all validation rules including regex, enum, date validation, and more.
+**Supports:** nested objects, collections, arrays, deep nesting. See the **[Supported Rules Guide](docs/supported-rules.md)** for detailed examples.
 
 ## Security
 
