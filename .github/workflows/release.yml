@@ -18,7 +18,8 @@ on:
 
 jobs:
   release:
-    name: Create Release
+    permissions:
+      contents: write
     uses: ./.github/workflows/create-release.yml
     with:
       version-type: ${{ inputs.version-type }}
@@ -27,8 +28,10 @@ jobs:
       RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
 
   publish:
-    name: Publish to Maven Central
     needs: release
+    permissions:
+      contents: read
+      packages: write
     uses: ./.github/workflows/publish-maven.yml
     with:
       version: ${{ needs.release.outputs.version }}
@@ -39,8 +42,9 @@ jobs:
       MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
 
   update-readme:
-    name: Update README
     needs: [release, publish]
+    permissions:
+      contents: write
     uses: ./.github/workflows/update-readme.yml
     with:
       version: ${{ needs.release.outputs.version }}

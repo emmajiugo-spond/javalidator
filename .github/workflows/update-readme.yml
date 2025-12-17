@@ -15,8 +15,6 @@ jobs:
   update-readme:
     name: Update README
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout main branch
