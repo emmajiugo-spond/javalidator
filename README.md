@@ -15,6 +15,8 @@ A framework-agnostic Java validation library with Laravel-style syntax, inspired
 - ✅ **Framework-Agnostic** - Core library has zero dependencies
 - ✅ **Laravel-Style Syntax** - Familiar pipe-separated validation rules
 - ✅ **Record & Class Support** - Works with both Java records and traditional POJOs
+- ✅ **Method Parameter Validation** - Validate method parameters directly with `@Rule`
+- ✅ **Service Layer Validation** - Use `@Validated` to enable validation in `@Service`/`@Component` classes (spring framework)
 - ✅ **Extensible** - Easy to add custom validation rules
 - ✅ **Type-Safe** - Leverages Java's type system
 - ✅ **Custom Messages** - Per-rule custom error messages
