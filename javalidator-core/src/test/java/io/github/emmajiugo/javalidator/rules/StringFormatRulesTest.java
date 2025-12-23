@@ -118,5 +118,40 @@ class StringFormatRulesTest {
             assertValidation(new ZipCode(null))
                     .isValid();
         }
+
+
+        // Range format tests
+        record PhoneNumber(
+                @Rule("required|digits:10,11")
+                String phone
+        ) {}
+
+        @Test
+        @DisplayName("should pass with digit count within range")
+        void shouldPassWithDigitCountWithinRange() {
+            assertValidation(new PhoneNumber("1234567890"))
+                    .isValid();
+
+            assertValidation(new PhoneNumber("12345678901"))
+                    .isValid();
+        }
+
+        @Test
+        @DisplayName("should fail with digit count below range minimum")
+        void shouldFailWithDigitCountBelowRangeMinimum() {
+            assertValidation(new PhoneNumber("123456789"))
+                    .hasSingleError()
+                    .hasErrorOn("phone")
+                    .withMessageContaining("between 10 and 11 digits");
+        }
+
+        @Test
+        @DisplayName("should fail with digit count above range maximum")
+        void shouldFailWithDigitCountAboveRangeMaximum() {
+            assertValidation(new PhoneNumber("123456789012"))
+                    .hasSingleError()
+                    .hasErrorOn("phone")
+                    .withMessageContaining("between 10 and 11 digits");
+        }
     }
 }
